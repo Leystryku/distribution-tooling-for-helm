@@ -3,15 +3,12 @@ package artifacts
 import (
 	"context"
 	"crypto/tls"
-	"encoding/base64"
 	"fmt"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"oras.land/oras-go/v2/registry/remote/auth"
 
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/cli"
@@ -98,16 +95,9 @@ func getRegistryClientWrap(cfg *RegistryClientConfig) (*registryClientWrap, erro
 		opts = append(opts, registry.ClientOptHTTPClient(httpClient))
 	}
 	if cfg.Auth.Username != "" && cfg.Auth.Password != "" {
-		basicAuth := "Basic " + base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", cfg.Auth.Username, cfg.Auth.Password)))
 		opts = append(
 			opts,
 			registry.ClientOptBasicAuth(cfg.Auth.Username, cfg.Auth.Password),
-			registry.ClientOptAuthorizer(auth.Client{
-				Client: httpClient,
-				Header: http.Header{
-					"Authorization": []string{basicAuth},
-				},
-			}),
 		)
 	}
 	r, err := registry.NewClient(opts...)
