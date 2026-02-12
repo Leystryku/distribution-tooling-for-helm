@@ -194,6 +194,13 @@ func findImageElementsInMap(data map[string]interface{}, id string) []*ValuesIma
 		if v, ok := v.(map[string]interface{}); ok {
 			elements = append(elements, findImageElementsInMap(v, fmt.Sprintf("%s.%s", id, k))...)
 		}
+		if v, ok := v.([]interface{}); ok {
+			for i, v := range v {
+				if v, ok := v.(map[string]interface{}); ok {
+					elements = append(elements, findImageElementsInMap(v, fmt.Sprintf("%s.%s[%d]", id, k, i))...)
+				}
+			}
+		}
 	}
 	return elements
 }
