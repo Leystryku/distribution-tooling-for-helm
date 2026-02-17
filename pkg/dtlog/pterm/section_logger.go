@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/vmware-labs/distribution-tooling-for-helm/internal/widgets"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 const (
@@ -25,13 +25,13 @@ type SectionLogger struct {
 }
 
 // ProgressBar returns a new ProgressBar
-func (l *SectionLogger) ProgressBar() log.ProgressBar {
+func (l *SectionLogger) ProgressBar() dtlog.ProgressBar {
 	return NewProgressBar(l.prefix)
 }
 
 // Successf logs a new success message (more efusive than Infof)
 func (l *SectionLogger) Successf(format string, args ...interface{}) {
-	l.printMessage(log.InfoLevel, Success, format, args...)
+	l.printMessage(dtlog.InfoLevel, Success, format, args...)
 }
 
 // PrefixText returns the indented version of the provided text
@@ -59,18 +59,18 @@ func (l *SectionLogger) ExecuteStep(title string, fn func() error) error {
 }
 
 // Section executes the provided function inside a new section
-func (l *SectionLogger) Section(title string, fn func(log.SectionLogger) error) error {
+func (l *SectionLogger) Section(title string, fn func(dtlog.SectionLogger) error) error {
 	childLog := l.StartSection(title)
 	return fn(childLog)
 }
 
 // StartSection starts a new log section, with nested indentation
-func (l *SectionLogger) StartSection(str string) log.SectionLogger {
-	l.printMessage(log.AlwaysLevel, Fold, "%s", str)
+func (l *SectionLogger) StartSection(str string) dtlog.SectionLogger {
+	l.printMessage(dtlog.AlwaysLevel, Fold, "%s", str)
 	return l.nest()
 }
 
-func (l *SectionLogger) nest() log.SectionLogger {
+func (l *SectionLogger) nest() dtlog.SectionLogger {
 	newLog := &SectionLogger{nestLevel: l.nestLevel + 1, Logger: NewLogger()}
 	newLog.prefix = strings.Repeat(" ", newLog.nestLevel*nestSpacing)
 	newLog.level = l.level

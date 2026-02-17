@@ -13,9 +13,9 @@ import (
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/verify"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/carvel"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/silent"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/imagelock"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/silent"
 
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
 )
@@ -67,7 +67,7 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 				}
 				l.Infof("Images.lock file written to %q", lockFile)
 			}
-			if err := l.Section(fmt.Sprintf("Generating Carvel bundle for Helm chart %q", chartPath), func(childLog log.SectionLogger) error {
+			if err := l.Section(fmt.Sprintf("Generating Carvel bundle for Helm chart %q", chartPath), func(childLog dtlog.SectionLogger) error {
 				if err := GenerateBundle(
 					chartPath,
 					chartutils.WithAnnotationsKey(cfg.AnnotationsKey),

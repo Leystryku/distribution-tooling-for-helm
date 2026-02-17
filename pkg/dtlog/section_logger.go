@@ -1,4 +1,4 @@
-package log
+package dtlog
 
 // ProgressBar defines a ProgressBar widget
 type ProgressBar interface {

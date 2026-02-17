@@ -16,11 +16,11 @@ import (
 	"github.com/vmware-labs/distribution-tooling-for-helm/internal/widgets"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/artifacts"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/silent"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/imagelock"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/silent"
 
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/logrus"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/logrus"
 
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/relocator"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
@@ -38,7 +38,7 @@ type Config struct {
 	UsePlainHTTP          bool
 	Insecure              bool
 	Platforms             []string
-	logger                log.SectionLogger
+	logger                dtlog.SectionLogger
 	TempDirectory         string
 	Version               string
 	Carvelize             bool
@@ -170,7 +170,7 @@ func WithVersion(version string) func(c *Config) {
 }
 
 // WithLogger configures the Logger of the WrapConfig
-func WithLogger(logger log.SectionLogger) func(c *Config) {
+func WithLogger(logger dtlog.SectionLogger) func(c *Config) {
 	return func(c *Config) {
 		c.logger = logger
 	}
@@ -192,7 +192,7 @@ func (c *Config) GetTemporaryDirectory() (string, error) {
 }
 
 // GetLogger returns the logger of the WrapConfig
-func (c *Config) GetLogger() log.SectionLogger {
+func (c *Config) GetLogger() dtlog.SectionLogger {
 	if c.logger != nil {
 		return c.logger
 	}
@@ -310,7 +310,7 @@ func unwrapChart(inputChart, registryURL, pushChartURL string, opts ...Option) (
 			showImagesSummary(images, l)
 		}
 		if askYesNoQuestion(l.PrefixText("Do you want to push the wrapped images to the OCI registry?"), cfg) {
-			if err := l.Section("Pushing Images", func(subLog log.SectionLogger) error {
+			if err := l.Section("Pushing Images", func(subLog dtlog.SectionLogger) error {
 				return pushChartImagesAndVerify(ctx, wrap, NewConfig(append(opts, WithLogger(subLog))...))
 			}); err != nil {
 				return "", l.Failf("Failed to push images: %w", err)
@@ -378,7 +378,7 @@ func pushChartImagesAndVerify(ctx context.Context, wrap wrapping.Wrap, cfg *Conf
 	return nil
 }
 
-func getImageList(wrap wrapping.Lockable, l log.SectionLogger) imagelock.ImageList {
+func getImageList(wrap wrapping.Lockable, l dtlog.SectionLogger) imagelock.ImageList {
 	lock, err := wrap.GetImagesLock()
 
 	if err != nil {
@@ -392,8 +392,8 @@ func getImageList(wrap wrapping.Lockable, l log.SectionLogger) imagelock.ImageLi
 	return lock.Images
 }
 
-func showImagesSummary(images imagelock.ImageList, l log.SectionLogger) {
-	_ = l.Section(fmt.Sprintf("The wrap includes the following %d images:\n", len(images)), func(log.SectionLogger) error {
+func showImagesSummary(images imagelock.ImageList, l dtlog.SectionLogger) {
+	_ = l.Section(fmt.Sprintf("The wrap includes the following %d images:\n", len(images)), func(dtlog.SectionLogger) error {
 		for _, img := range images {
 			l.Printf(img.Image)
 		}

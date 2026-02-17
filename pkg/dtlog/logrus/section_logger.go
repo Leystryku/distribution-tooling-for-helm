@@ -1,6 +1,6 @@
 package logrus
 
-import "github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+import "github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 
 // SectionLogger defines a SectionLogger implemented by logrus
 type SectionLogger struct {
@@ -19,13 +19,13 @@ func (l *SectionLogger) PrefixText(txt string) string {
 }
 
 // StartSection starts a new log section
-func (l *SectionLogger) StartSection(string) log.SectionLogger {
+func (l *SectionLogger) StartSection(string) dtlog.SectionLogger {
 	return l
 }
 
 // ProgressBar returns a new silent progress bar
-func (l *SectionLogger) ProgressBar() log.ProgressBar {
-	return log.NewLoggedProgressBar(l.Logger)
+func (l *SectionLogger) ProgressBar() dtlog.ProgressBar {
+	return dtlog.NewLoggedProgressBar(l.Logger)
 }
 
 // Successf logs a new success message (more efusive than Infof)
@@ -34,7 +34,7 @@ func (l *SectionLogger) Successf(format string, args ...interface{}) {
 }
 
 // Section executes the provided function inside a new section
-func (l *SectionLogger) Section(title string, fn func(log.SectionLogger) error) error {
+func (l *SectionLogger) Section(title string, fn func(dtlog.SectionLogger) error) error {
 	l.Info(title)
 	return fn(l)
 }

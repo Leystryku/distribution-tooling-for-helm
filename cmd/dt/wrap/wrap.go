@@ -15,11 +15,11 @@ import (
 	"github.com/vmware-labs/distribution-tooling-for-helm/internal/widgets"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/artifacts"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/silent"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/imagelock"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/silent"
 
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/logrus"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/logrus"
 
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/wrapping"
@@ -38,7 +38,7 @@ type Config struct {
 	UsePlainHTTP          bool
 	Insecure              bool
 	Platforms             []string
-	logger                log.SectionLogger
+	logger                dtlog.SectionLogger
 	TempDirectory         string
 	Version               string
 	Carvelize             bool
@@ -145,7 +145,7 @@ func WithVersion(version string) func(c *Config) {
 }
 
 // WithLogger configures the Logger of the WrapConfig
-func WithLogger(logger log.SectionLogger) func(c *Config) {
+func WithLogger(logger dtlog.SectionLogger) func(c *Config) {
 	return func(c *Config) {
 		c.logger = logger
 	}
@@ -173,7 +173,7 @@ func (c *Config) GetTemporaryDirectory() (string, error) {
 }
 
 // GetLogger returns the logger of the WrapConfig
-func (c *Config) GetLogger() log.SectionLogger {
+func (c *Config) GetLogger() dtlog.SectionLogger {
 	if c.logger != nil {
 		return c.logger
 	}
@@ -339,7 +339,7 @@ func pullImages(wrap wrapping.Wrap, cfg *Config) error {
 	if len(lock.Images) == 0 {
 		l.Warnf("No images found in Images.lock")
 	} else {
-		return l.Section(fmt.Sprintf("Pulling images into %q", wrap.ImagesDir()), func(childLog log.SectionLogger) error {
+		return l.Section(fmt.Sprintf("Pulling images into %q", wrap.ImagesDir()), func(childLog dtlog.SectionLogger) error {
 			if err := pull.ChartImages(
 				wrap,
 				wrap.ImagesDir(),
@@ -416,7 +416,7 @@ func wrapChart(inputPath string, opts ...Option) (string, error) {
 		}
 	}
 	if cfg.Carvelize {
-		if err := l.Section(fmt.Sprintf("Generating Carvel bundle for Helm chart %q", chartPath), func(childLog log.SectionLogger) error {
+		if err := l.Section(fmt.Sprintf("Generating Carvel bundle for Helm chart %q", chartPath), func(childLog dtlog.SectionLogger) error {
 			return carvelize.GenerateBundle(
 				chartRoot,
 				chartutils.WithAnnotationsKey(cfg.AnnotationsKey),
@@ -490,7 +490,7 @@ This command will pull all the container images and wrap it into a single tarbal
 				WithSkipPullImages(skipPullImages),
 			)
 			if err != nil {
-				if _, ok := err.(*log.LoggedError); ok {
+				if _, ok := err.(*dtlog.LoggedError); ok {
 					// We already logged it, lets be less verbose
 					return fmt.Errorf("failed to wrap Helm chart: %v", err)
 				}

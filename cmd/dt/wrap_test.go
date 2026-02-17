@@ -23,7 +23,7 @@ import (
 	tu "github.com/vmware-labs/distribution-tooling-for-helm/internal/testutil"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/artifacts"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/carvel"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/logrus"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/logrus"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/wrapping"
 	"gopkg.in/yaml.v3"

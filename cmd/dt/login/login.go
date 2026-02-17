@@ -12,7 +12,7 @@ import (
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/spf13/cobra"
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/config"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 type loginOptions struct {
@@ -61,7 +61,7 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 }
 
 // from https://github.com/google/go-containerregistry/blob/main/cmd/crane/cmd/auth.go
-func login(opts loginOptions, l log.SectionLogger) error {
+func login(opts loginOptions, l dtlog.SectionLogger) error {
 	if opts.passwordStdin {
 		contents, err := io.ReadAll(os.Stdin)
 		if err != nil {

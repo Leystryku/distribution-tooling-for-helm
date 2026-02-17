@@ -8,7 +8,7 @@ import (
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/config"
 	"github.com/vmware-labs/distribution-tooling-for-helm/internal/widgets"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/wrapping"
 )
@@ -55,7 +55,7 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 			if len(lock.Images) == 0 {
 				l.Warnf("No images found in Images.lock")
 			} else {
-				if err := l.Section(fmt.Sprintf("Pulling images into %q", chart.ImagesDir()), func(childLog log.SectionLogger) error {
+				if err := l.Section(fmt.Sprintf("Pulling images into %q", chart.ImagesDir()), func(childLog dtlog.SectionLogger) error {
 					if err := pullImages(
 						chart,
 						imagesDir,

@@ -9,9 +9,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/config"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/silent"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/imagelock"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/silent"
 )
 
 // NewCmd returns a new dt lock command
@@ -64,7 +64,7 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 }
 
 // Create generates an Images.lock file from the chart annotations
-func Create(chartPath string, outputFile string, l log.Logger, opts ...imagelock.Option) error {
+func Create(chartPath string, outputFile string, l dtlog.Logger, opts ...imagelock.Option) error {
 	l.Infof("Generating images lock for Helm chart %q", chartPath)
 
 	lock, err := imagelock.GenerateFromChart(chartPath, opts...)

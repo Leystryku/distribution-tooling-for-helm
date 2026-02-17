@@ -9,7 +9,7 @@ import (
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/spf13/cobra"
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/config"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 // NewCmd returns a new dt logout command
@@ -40,7 +40,7 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 }
 
 // from https://github.com/google/go-containerregistry/blob/main/cmd/crane/cmd/auth.go
-func logout(serverAddress string, l log.SectionLogger) error {
+func logout(serverAddress string, l dtlog.SectionLogger) error {
 	l.Infof("logout from %s", serverAddress)
 	cf, err := dockercfg.Load(os.Getenv("DOCKER_CONFIG"))
 	if err != nil {

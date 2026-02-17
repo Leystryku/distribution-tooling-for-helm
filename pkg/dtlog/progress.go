@@ -1,4 +1,4 @@
-package log
+package dtlog
 
 // LoggedProgressBar defines a widget that supports the ProgressBar interface but just logs messages
 type LoggedProgressBar struct {

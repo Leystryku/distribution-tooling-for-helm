@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 // Logger defines a logger that does not log anything
@@ -35,9 +35,9 @@ func (l *Logger) Printf(string, ...interface{}) {}
 func (l *Logger) SetWriter(io.Writer) {}
 
 // SetLevel does nothing
-func (l *Logger) SetLevel(log.Level) {}
+func (l *Logger) SetLevel(dtlog.Level) {}
 
 // Failf returns a LoggedError
 func (l *Logger) Failf(format string, args ...interface{}) error {
-	return &log.LoggedError{Err: fmt.Errorf(format, args...)}
+	return &dtlog.LoggedError{Err: fmt.Errorf(format, args...)}
 }
