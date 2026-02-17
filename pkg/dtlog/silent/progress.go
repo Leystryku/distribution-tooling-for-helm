@@ -1,6 +1,6 @@
 package silent
 
-import "github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+import "github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 
 // ProgressBar defines a widget that supports the ProgressBar interface and does nothing
 type ProgressBar struct {
@@ -16,12 +16,12 @@ func (p *ProgressBar) Stop() {
 }
 
 // Start initiates the progress bar
-func (p *ProgressBar) Start(...interface{}) (log.ProgressBar, error) {
+func (p *ProgressBar) Start(...interface{}) (dtlog.ProgressBar, error) {
 	return p, nil
 }
 
 // WithTotal sets the progress bar total steps
-func (p *ProgressBar) WithTotal(int) log.ProgressBar {
+func (p *ProgressBar) WithTotal(int) dtlog.ProgressBar {
 	return p
 }
 
@@ -43,11 +43,11 @@ func (p *ProgressBar) Warnf(string, ...interface{}) {
 }
 
 // UpdateTitle updates the progress bar title
-func (p *ProgressBar) UpdateTitle(string) log.ProgressBar {
+func (p *ProgressBar) UpdateTitle(string) dtlog.ProgressBar {
 	return p
 }
 
 // Add increments the progress bar the specified amount
-func (p *ProgressBar) Add(int) log.ProgressBar {
+func (p *ProgressBar) Add(int) dtlog.ProgressBar {
 	return p
 }

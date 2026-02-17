@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/config"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
 )
 
@@ -44,21 +44,21 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 				}
 			} else {
 
-				_ = l.Section("Wrap Information", func(l log.SectionLogger) error {
+				_ = l.Section("Wrap Information", func(l dtlog.SectionLogger) error {
 					l.Printf("Chart: %s", lock.Chart.Name)
 					l.Printf("Version: %s", lock.Chart.Version)
 					l.Printf("App Version: %s", lock.Chart.AppVersion)
-					_ = l.Section("Metadata", func(l log.SectionLogger) error {
+					_ = l.Section("Metadata", func(l dtlog.SectionLogger) error {
 						for k, v := range lock.Metadata {
 							l.Printf("- %s: %s", k, v)
 
 						}
 						return nil
 					})
-					_ = l.Section("Images", func(l log.SectionLogger) error {
+					_ = l.Section("Images", func(l dtlog.SectionLogger) error {
 						for _, img := range lock.Images {
 							if showDetails {
-								_ = l.Section(fmt.Sprintf("%s/%s", img.Chart, img.Name), func(l log.SectionLogger) error {
+								_ = l.Section(fmt.Sprintf("%s/%s", img.Chart, img.Name), func(l dtlog.SectionLogger) error {
 									l.Printf("Image: %s", img.Image)
 									if showDetails {
 										l.Printf("Digests")

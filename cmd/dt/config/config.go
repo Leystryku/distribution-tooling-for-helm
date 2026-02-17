@@ -9,17 +9,17 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	ll "github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/logrus"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/imagelock"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	ll "github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/logrus"
 
-	pl "github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/pterm"
+	pl "github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/pterm"
 )
 
 // Config defines the configuration of the dt tool
 type Config struct {
 	Insecure       bool
-	logger         log.SectionLogger
+	logger         dtlog.SectionLogger
 	Context        context.Context
 	AnnotationsKey string
 	TempDirectory  string
@@ -40,16 +40,16 @@ func NewConfig() *Config {
 }
 
 // Logger returns the current SectionLogger, creating it if necessary
-func (c *Config) Logger() log.SectionLogger {
+func (c *Config) Logger() dtlog.SectionLogger {
 	if c.logger == nil {
 
-		var l log.SectionLogger
+		var l dtlog.SectionLogger
 		if c.UsePlainLog {
 			l = ll.NewSectionLogger()
 		} else {
 			l = pl.NewSectionLogger()
 		}
-		lvl, err := log.ParseLevel(c.LogLevel)
+		lvl, err := dtlog.ParseLevel(c.LogLevel)
 
 		if err != nil {
 			l.Warnf("Invalid log level %s: %v", c.LogLevel, err)

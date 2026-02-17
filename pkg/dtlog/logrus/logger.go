@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/sirupsen/logrus"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 // Logger defines a Logger implemented by logrus
@@ -18,11 +18,11 @@ type Logger struct {
 func (l *Logger) Failf(format string, args ...interface{}) error {
 	err := fmt.Errorf(format, args...)
 	l.Errorf("%v", err)
-	return &log.LoggedError{Err: err}
+	return &dtlog.LoggedError{Err: err}
 }
 
 // SetLevel sets the log level
-func (l *Logger) SetLevel(level log.Level) {
+func (l *Logger) SetLevel(level dtlog.Level) {
 	l.Logger.SetLevel(logrus.Level(level))
 }
 

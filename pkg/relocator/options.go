@@ -1,8 +1,8 @@
 package relocator
 
 import (
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	silentLog "github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/silent"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	silentLog "github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/silent"
 
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/imagelock"
 )
@@ -10,7 +10,7 @@ import (
 // RelocateConfig defines the configuration used in the relocator functions
 type RelocateConfig struct {
 	ImageLockConfig     imagelock.Config
-	Log                 log.Logger
+	Log                 dtlog.Logger
 	RelocateLockFile    bool
 	Recursive           bool
 	SkipImageRelocation bool
@@ -63,7 +63,7 @@ func WithRelocateLockFile(relocateLock bool) func(rc *RelocateConfig) {
 }
 
 // WithLog customizes the log used by the tool
-func WithLog(l log.Logger) func(rc *RelocateConfig) {
+func WithLog(l dtlog.Logger) func(rc *RelocateConfig) {
 	return func(rc *RelocateConfig) {
 		rc.Log = l
 	}

@@ -1,5 +1,5 @@
-// Package log defines the Logger interfaces
-package log
+// Package dtlog defines the Logger interfaces
+package dtlog
 
 import (
 	"io"

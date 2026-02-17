@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/pterm/pterm"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/utils"
 )
 
@@ -24,7 +24,7 @@ func (p *ProgressBar) Stop() {
 }
 
 // Start initiates the progress bar
-func (p *ProgressBar) Start(title ...interface{}) (log.ProgressBar, error) {
+func (p *ProgressBar) Start(title ...interface{}) (dtlog.ProgressBar, error) {
 	res, err := p.ProgressbarPrinter.Start(title...)
 	if err != nil {
 		return p, fmt.Errorf("failed to start progress bar: %w", err)
@@ -34,7 +34,7 @@ func (p *ProgressBar) Start(title ...interface{}) (log.ProgressBar, error) {
 }
 
 // WithTotal sets the progress bar total steps
-func (p *ProgressBar) WithTotal(n int) log.ProgressBar {
+func (p *ProgressBar) WithTotal(n int) dtlog.ProgressBar {
 	p.ProgressbarPrinter = p.ProgressbarPrinter.WithTotal(n)
 	return p
 }
@@ -69,13 +69,13 @@ func (p *ProgressBar) formatTitle(title string) string {
 }
 
 // UpdateTitle updates the progress bar title
-func (p *ProgressBar) UpdateTitle(title string) log.ProgressBar {
+func (p *ProgressBar) UpdateTitle(title string) dtlog.ProgressBar {
 	p.ProgressbarPrinter.UpdateTitle(p.formatTitle(title))
 	return p
 }
 
 // Add increments the progress bar the specified amount
-func (p *ProgressBar) Add(inc int) log.ProgressBar {
+func (p *ProgressBar) Add(inc int) dtlog.ProgressBar {
 	p.ProgressbarPrinter.Add(inc)
 	return p
 }

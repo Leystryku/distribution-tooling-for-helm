@@ -20,7 +20,7 @@ import (
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/unwrap"
 	tu "github.com/vmware-labs/distribution-tooling-for-helm/internal/testutil"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/artifacts"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/logrus"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/logrus"
 
 	"helm.sh/helm/v3/pkg/repo/repotest"
 )

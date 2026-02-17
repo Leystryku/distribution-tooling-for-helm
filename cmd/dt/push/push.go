@@ -8,8 +8,8 @@ import (
 	"github.com/vmware-labs/distribution-tooling-for-helm/cmd/dt/config"
 	"github.com/vmware-labs/distribution-tooling-for-helm/internal/widgets"
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/chartutils"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log/silent"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog/silent"
 
 	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/wrapping"
 )
@@ -58,7 +58,7 @@ func NewCmd(cfg *config.Config) *cobra.Command {
 			if imagesDir == "" {
 				imagesDir = chart.ImagesDir()
 			}
-			if err := l.Section("Pushing Images", func(subLog log.SectionLogger) error {
+			if err := l.Section("Pushing Images", func(subLog dtlog.SectionLogger) error {
 				if err := pushImages(
 					chart,
 					imagesDir,

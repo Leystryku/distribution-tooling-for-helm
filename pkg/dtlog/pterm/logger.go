@@ -7,22 +7,22 @@ import (
 	"os"
 
 	"github.com/pterm/pterm"
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 // NewLogger returns a new Logger implemented by pterm
 func NewLogger() *Logger {
-	return &Logger{writer: os.Stdout, level: log.InfoLevel}
+	return &Logger{writer: os.Stdout, level: dtlog.InfoLevel}
 }
 
 // Logger defines a logger implemented using pterm
 type Logger struct {
 	writer io.Writer
-	level  log.Level
+	level  dtlog.Level
 	prefix string
 }
 
-func (l *Logger) printMessage(messageLevel log.Level, printer *pterm.PrefixPrinter, format string, args ...interface{}) {
+func (l *Logger) printMessage(messageLevel dtlog.Level, printer *pterm.PrefixPrinter, format string, args ...interface{}) {
 	if messageLevel > l.level {
 		return
 	}
@@ -35,7 +35,7 @@ func (l *Logger) SetWriter(w io.Writer) {
 }
 
 // SetLevel sets the log level
-func (l *Logger) SetLevel(level log.Level) {
+func (l *Logger) SetLevel(level dtlog.Level) {
 	l.level = level
 }
 
@@ -43,30 +43,30 @@ func (l *Logger) SetLevel(level log.Level) {
 func (l *Logger) Failf(format string, args ...interface{}) error {
 	err := fmt.Errorf(format, args...)
 	l.Errorf("%v", err)
-	return &log.LoggedError{Err: err}
+	return &dtlog.LoggedError{Err: err}
 }
 
 // Printf prints a message in the log
 func (l *Logger) Printf(format string, args ...interface{}) {
-	l.printMessage(log.AlwaysLevel, Plain, format, args...)
+	l.printMessage(dtlog.AlwaysLevel, Plain, format, args...)
 }
 
 // Errorf logs an error message
 func (l *Logger) Errorf(format string, args ...interface{}) {
-	l.printMessage(log.ErrorLevel, Error, format, args...)
+	l.printMessage(dtlog.ErrorLevel, Error, format, args...)
 }
 
 // Infof logs an information message
 func (l *Logger) Infof(format string, args ...interface{}) {
-	l.printMessage(log.InfoLevel, Info, format, args...)
+	l.printMessage(dtlog.InfoLevel, Info, format, args...)
 }
 
 // Debugf logs a debug message
 func (l *Logger) Debugf(format string, args ...interface{}) {
-	l.printMessage(log.DebugLevel, Debug, format, args...)
+	l.printMessage(dtlog.DebugLevel, Debug, format, args...)
 }
 
 // Warnf logs a warning message
 func (l *Logger) Warnf(format string, args ...interface{}) {
-	l.printMessage(log.WarnLevel, Warning, format, args...)
+	l.printMessage(dtlog.WarnLevel, Warning, format, args...)
 }

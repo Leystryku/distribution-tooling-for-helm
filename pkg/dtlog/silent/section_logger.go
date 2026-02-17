@@ -2,7 +2,7 @@
 package silent
 
 import (
-	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/log"
+	"github.com/vmware-labs/distribution-tooling-for-helm/pkg/dtlog"
 )
 
 // SectionLogger is a SectionLogger that does not output anything
@@ -26,12 +26,12 @@ func (l *SectionLogger) PrefixText(txt string) string {
 }
 
 // StartSection starts a new log section
-func (l *SectionLogger) StartSection(string) log.SectionLogger {
+func (l *SectionLogger) StartSection(string) dtlog.SectionLogger {
 	return l
 }
 
 // ProgressBar returns a new silent progress bar
-func (l *SectionLogger) ProgressBar() log.ProgressBar {
+func (l *SectionLogger) ProgressBar() dtlog.ProgressBar {
 	return NewProgressBar()
 }
 
@@ -40,6 +40,6 @@ func (l *SectionLogger) Successf(string, ...interface{}) {
 }
 
 // Section executes the provided function inside a new section
-func (l *SectionLogger) Section(_ string, fn func(log.SectionLogger) error) error {
+func (l *SectionLogger) Section(_ string, fn func(dtlog.SectionLogger) error) error {
 	return fn(l)
 }
