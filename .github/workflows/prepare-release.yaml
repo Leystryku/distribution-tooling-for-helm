@@ -30,7 +30,7 @@ jobs:
           sed -i "s/var Version = \".*\"/var Version = \"$PLUGIN_VERSION\"/" cmd/dt/version.go
           git checkout -B release/$PLUGIN_VERSION
           git add plugin.yaml cmd/dt/version.go
-          git commit -m 'Prepare release ${{ inputs.tag }}'
+          git commit -s -m 'Prepare release ${{ inputs.tag }}'
           git push origin release/$PLUGIN_VERSION
 
       - name: Create PR
